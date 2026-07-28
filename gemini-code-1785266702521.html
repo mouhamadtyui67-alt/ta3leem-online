@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الطالب الذكي</title>
+    <!-- Tailwind CSS للتصميم السريع والمرن -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- بنر الفترة التجريبية (Free Beta) -->
+    <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-center py-2 px-4 text-sm font-semibold shadow-md">
+        <i class="fa-solid fa-sparkles ml-1"></i> فترة تجريبية مجانية بالكامل! جميع الخدمات والأدوات الذكية متاحة الآن مجاناً لفترة محدودة.
+    </div>
+
+    <!-- شريط التنقل العلوي (Navbar) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">منصة الطالب الذكي</h1>
+                    <span class="text-xs text-indigo-600 font-semibold">مساعدك الدراسي الذكي</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-2 space-x-reverse text-sm bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                <i class="fa-solid fa-code text-indigo-500"></i>
+                <span class="text-slate-600">المطور: <strong class="text-indigo-600">محمد الحسين</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-5xl w-full mx-auto p-4 space-y-6">
+
+        <!-- لوحة التنقل بين الأقسام (Tabs) -->
+        <div class="flex overflow-x-auto space-x-2 space-x-reverse pb-2 border-b border-slate-200 scrollbar-none">
+            <button onclick="switchTab('ocr')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-indigo-600 text-white shadow transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-camera"></i> رفع الدفتر (OCR)
+            </button>
+            <button onclick="switchTab('quiz')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-brain"></i> مولد الاختبارات
+            </button>
+            <button onclick="switchTab('flashcards')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-clone"></i> بطاقات الاستذكار
+            </button>
+            <button onclick="switchTab('summary')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-file-lines"></i> التلخيص والشرح
+            </button>
+            <button onclick="switchTab('solver')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-lightbulb"></i> مساعد الحل
+            </button>
+            <button onclick="switchTab('tools')" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-clock"></i> المؤقت والخطة
+            </button>
+        </div>
+
+        <!-- 1. منطقة رفع وتصوير الدفتر (OCR Upload) -->
+        <section id="tab-ocr" class="tab-content bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <div class="border-2 border-dashed border-indigo-200 rounded-2xl p-8 text-center bg-indigo-50/50 hover:bg-indigo-50 transition cursor-pointer relative" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="handleImageUpload(event)">
+                <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">اضغط لرفع صورة الدفتر أو الكتاب</h3>
+                <p class="text-xs text-slate-500">يدعم صيغ JPG, PNG (الخدمة مجانية بالكامل حالياً)</p>
+                <div id="uploadPreview" class="mt-4 hidden">
+                    <img id="previewImg" src="" alt="معاينة الصورة" class="max-h-48 mx-auto rounded-xl shadow border">
+                    <p class="text-xs text-emerald-600 font-semibold mt-2"><i class="fa-solid fa-circle-check"></i> تم رفع الصورة وجاهزة للتحليل الذكي!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. مولد الاختبارات والامتحانات التفاعلية (Quiz Generator) -->
+        <section id="tab-quiz" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-brain text-indigo-600"></i> مولد الاختبارات التفاعلية
+            </h2>
+            <div id="quiz-container" class="space-y-4">
+                <p class="text-sm text-slate-600">السؤال 1 من 3: ما هي الوحدة الأساسية لبناء الكائنات الحية؟</p>
+                <div class="space-y-2">
+                    <label class="block p-3 rounded-xl border border-slate-200 hover:bg-indigo-50 cursor-pointer transition text-sm flex items-center gap-3">
+                        <input type="radio" name="q1" value="wrong" class="text-indigo-600"> النسيج
+                    </label>
+                    <label class="block p-3 rounded-xl border border-slate-200 hover:bg-indigo-50 cursor-pointer transition text-sm flex items-center gap-3">
+                        <input type="radio" name="q1" value="correct" class="text-indigo-600"> الخلية
+                    </label>
+                    <label class="block p-3 rounded-xl border border-slate-200 hover:bg-indigo-50 cursor-pointer transition text-sm flex items-center gap-3">
+                        <input type="radio" name="q1" value="wrong" class="text-indigo-600"> العضو
+                    </label>
+                </div>
+                <button onclick="submitQuiz()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow">تصحيح الإجابة</button>
+                <div id="quizResult" class="hidden text-center p-3 rounded-xl font-bold text-sm"></div>
+            </div>
+        </section>
+
+        <!-- 3. بطاقات الاستذكار السريع (Flashcards) -->
+        <section id="tab-flashcards" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4 text-center">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2 justify-start">
+                <i class="fa-solid fa-clone text-indigo-600"></i> بطاقات الاستذكار السريع
+            </h2>
+            <p class="text-xs text-slate-500 text-right">اضغط على البطاقة لقلبها ومعرفة الإجابة</p>
+            <div class="perspective-1000 w-full max-w-sm mx-auto h-64 cursor-pointer" onclick="flipCard(this)">
+                <div class="relative w-full h-full duration-500 transform-style-3d shadow-md rounded-2xl" id="flashcardInner">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl p-6 flex flex-col justify-center items-center backface-hidden">
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded-full mb-3">السؤال</span>
+                        <p class="text-lg font-bold">ما هو قانون نيوتن الثاني للحركة؟</p>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl p-6 flex flex-col justify-center items-center backface-hidden rotate-y-180">
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded-full mb-3">الجواب</span>
+                        <p class="text-base font-bold">القوة = الكتلة × التسارع (F = m × a)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. قسم تلخيص وشرح المفاهيم -->
+        <section id="tab-summary" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-indigo-600"></i> قسم التلخيص والتحليل الذكي
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="runAction('summary')" class="p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-semibold text-sm transition flex flex-col items-center gap-2 border border-indigo-200">
+                    <i class="fa-solid fa-list-check text-xl"></i> تلخيص في نقاط أساسية
+                </button>
+                <button onclick="runAction('concept')" class="p-4 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl font-semibold text-sm transition flex flex-col items-center gap-2 border border-purple-200">
+                    <i class="fa-solid fa-face-smile text-xl"></i> شرح بأسلوب بسيط
+                </button>
+                <button onclick="runAction('questions')" class="p-4 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-xl font-semibold text-sm transition flex flex-col items-center gap-2 border border-pink-200">
+                    <i class="fa-solid fa-star text-xl"></i> أهم 5 أسئلة متوقعة
+                </button>
+            </div>
+            <div id="actionOutput" class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm hidden space-y-3">
+                <h4 class="font-bold text-slate-800" id="outputTitle"></h4>
+                <p class="text-slate-600" id="outputContent"></p>
+                <div class="flex gap-2 pt-2 border-t border-slate-200">
+                    <button onclick="readText()" class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 hover:bg-indigo-700"><i class="fa-solid fa-volume-high"></i> قراءة صوتية</button>
+                    <button onclick="window.print()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 hover:bg-slate-800"><i class="fa-solid fa-print"></i> تصدير PDF / طباعة</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. مساعد الحل خطوة بخطوة -->
+        <section id="tab-solver" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-lightbulb text-indigo-600"></i> مساعد الحل خطوة بخطوة
+            </h2>
+            <textarea id="complexQuestion" placeholder="اكتب السؤال المعقد هنا لتفكيكه وشرح طريقة حله..." class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24"></textarea>
+            <button onclick="solveStepByStep()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 transition shadow">تفكيك وشرح الحل</button>
+            <div id="solverResult" class="hidden p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm space-y-2">
+                <h4 class="font-bold text-emerald-800"><i class="fa-solid fa-circle-check"></i> خطوات الحل المنهجي:</h4>
+                <ol class="list-decimal list-inside space-y-1 text-slate-700">
+                    <li>فهم المعطيات والمطلوب بدقة.</li>
+                    <li>تحديد القانون أو القاعدة المناسبة.</li>
+                    <li>التعويض المباشر والخطوات الحسابية أو المنطقية.</li>
+                    <li>الوصول للنتيجة النهائية والتحقق من صحتها.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 6. المؤقت والخطة الدراسية -->
+        <section id="tab-tools" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-clock text-indigo-600"></i> مؤقت التركيز (Pomodoro) والمخطط
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Pomodoro -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center space-y-3">
+                    <h3 class="font-bold text-slate-700 text-sm">مؤقت بومودورو (25 دقيقة تركيز)</h3>
+                    <div id="timerDisplay" class="text-4xl font-black text-indigo-600 tracking-wider">25:00</div>
+                    <div class="flex justify-center gap-2">
+                        <button onclick="startTimer()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700">بدء</button>
+                        <button onclick="pauseTimer()" class="bg-amber-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-600">إيقاف مؤقت</button>
+                        <button onclick="resetTimer()" class="bg-slate-400 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-500">إعادة ضبط</button>
+                    </div>
+                </div>
+                <!-- Study Plan -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-slate-700 text-sm">مخطط خطة الدراسة السريعة</h3>
+                    <select id="lessonSize" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white">
+                        <option value="small">درس قصير (صفحات قليلة - 45 دقيقة)</option>
+                        <option value="medium">درس متوسط (فصل كامل - ساعتان)</option>
+                        <option value="large">وحدة كبيرة (مراجعة شاملة - 4 ساعات)</option>
+                    </select>
+                    <button onclick="generatePlan()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold hover:bg-indigo-700">إنشاء الجدول المقترح</button>
+                    <div id="planResult" class="hidden text-xs text-slate-600 font-medium"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- زر الدعم الفني العائم -->
+    <div class="fixed bottom-6 left-6 z-50">
+        <button onclick="openSupportModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xl transition transform hover:scale-105">
+            <i class="fa-solid fa-headset"></i>
+        </button>
+    </div>
+
+    <!-- نافذة الدعم الفني المنبثقة -->
+    <div id="supportModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl relative">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-base"><i class="fa-solid fa-headset text-indigo-600"></i> الدعم الفني والاقتراحات</h3>
+                <button onclick="closeSupportModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-500">واجهتك مشكلة أو لديك اقتراح لتحسين المنصة؟ تواصل معنا وسنرد عليك فوراً.</p>
+            <textarea id="supportMsg" placeholder="اكتب رسالتك هنا..." class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24"></textarea>
+            <button onclick="sendSupportMessage()" class="w-full bg-emerald-500 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-600 transition">إرسال عبر الواتساب</button>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة (Footer) -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1">
+            <p class="text-xs text-slate-600 font-medium">تم التطوير بكل حب بواسطة <strong class="text-indigo-600">محمد الحسين</strong></p>
+            <p class="text-[10px] text-slate-400">منصة الطالب الذكي - جميع الحقوق محفوظة 2026</p>
+        </div>
+    </footer>
+
+    <!-- البرمجة التفاعلية (JavaScript) -->
+    <script>
+        // التبديل بين الأقسام (Tabs)
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-indigo-600', 'text-white', 'shadow');
+                el.classList.add('bg-white', 'text-slate-600');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            event.currentTarget.classList.remove('bg-white', 'text-slate-600');
+            event.currentTarget.classList.add('bg-indigo-600', 'text-white', 'shadow');
+        }
+
+        // محاكاة رفع صورة الدفتر
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('uploadPreview').classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // تصحيح اختبار MCQ
+        function submitQuiz() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden');
+            if (selected && selected.value === 'correct') {
+                resultDiv.className = "text-center p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800";
+                resultDiv.innerHTML = "<i class='fa-solid fa-circle-check'></i> إجابة صحيحة! أحسنت.";
+            } else {
+                resultDiv.className = "text-center p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800";
+                resultDiv.innerHTML = "<i class='fa-solid fa-circle-xmark'></i> إجابة خاطئة. الإجابة الصحيحة هي: الخلية.";
+            }
+        }
+
+        // قلب بطاقات الاستذكار (Flashcards)
+        function flipCard(card) {
+            const inner = card.querySelector('#flashcardInner');
+            if (inner.style.transform === 'rotateY(180deg)') {
+                inner.style.transform = 'rotateY(0deg)';
+            } else {
+                inner.style.transform = 'rotateY(180deg)';
+            }
+        }
+
+        // تلخيص وشرح المفاهيم
+        function runAction(type) {
+            const outputBox = document.getElementById('actionOutput');
+            const title = document.getElementById('outputTitle');
+            const content = document.getElementById('outputContent');
+            outputBox.classList.remove('hidden');
+
+            if (type === 'summary') {
+                title.innerText = "التلخيص في نقاط أساسية:";
+                content.innerText = "1. المفهوم الأساسي يعتمد على الترابط البنيوي.\n2. يتم تقسيم العناصر إلى مدخلات ومخرجات.\n3. الخلاصة: التطبيق العملي يثبت المعلومة بنسبة 80%.";
+            } else if (type === 'concept') {
+                title.innerText = "شرح بأسلوب بسيط ومبسط:";
+                content.innerText = "تخيل أن الدرس عبارة عن وصفة طهي؛ المعطيات هي المكونات، والحل هو طريقة المزج الصحيحة للوصول للنتيجة النهائية بكل سهولة دون تعقيد!";
+            } else if (type === 'questions') {
+                title.innerText = "أهم 5 أسئلة متوقعة في الامتحان:";
+                content.innerText = "1. ما هو التعريف العلمي الدقيق؟\n2. قارن بين المفهومين الأول والثاني؟\n3. متى يُستخدم هذا القانون؟\n4. علل سبب حدوث الظاهرة كذا؟\n5. احسب الناتج بناءً على المعطيات التالية؟";
+            }
+        }
+
+        // القراءة الصوتية (Text-to-Speech)
+        function readText() {
+            const text = document.getElementById('outputContent').innerText;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-SA';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // مساعد الحل خطوة بخطوة
+        function solveStepByStep() {
+            const q = document.getElementById('complexQuestion').value;
+            if(q.trim() !== "") {
+                document.getElementById('solverResult').classList.remove('hidden');
+            } else {
+                alert("الرجاء كتابة السؤال أولاً.");
+            }
+        }
+
+        // مؤقت بومودورو
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+        function pauseTimer() {
+            clearInterval(timerInterval);
+        }
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // خطة الدراسة السريعة
+        function generatePlan() {
+            const size = document.getElementById('lessonSize').value;
+            const planDiv = document.getElementById('planResult');
+            planDiv.classList.remove('hidden');
+            if (size === 'small') {
+                planDiv.innerHTML = "💡 الخطة المقترحة: 15 دقيقة قراءة سريعة + 15 دقيقة تلخيص + 15 دقيقة حل تدريبات.";
+            } else if (size === 'medium') {
+                planDiv.innerHTML = "💡 الخطة المقترحة: 45 دقيقة استيعاب المفاهيم + 30 دقيقة بطاقات استذكار + 45 دقيقة اختبارات تجريبية.";
+            } else {
+                planDiv.innerHTML = "💡 الخطة المقترحة: ساعتان تقسيم للأقسام الرئيسية + ساعة حل أسئلة سابقة + ساعة مراجعة نهائية شاملة.";
+            }
+        }
+
+        // نافذة الدعم الفني
+        function openSupportModal() {
+            document.getElementById('supportModal').classList.remove('hidden');
+        }
+        function closeSupportModal() {
+            document.getElementById('supportModal').classList.add('hidden');
+        }
+        function sendSupportMessage() {
+            const msg = document.getElementById('supportMsg').value;
+            if(msg.trim() !== "") {
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+                closeSupportModal();
+            } else {
+                alert("الرجاء كتابة رسالة قبل الإرسال.");
+            }
+        }
+    </script>
+</body>
+</html>
