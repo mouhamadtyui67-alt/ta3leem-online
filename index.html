@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد الطالب الذكي</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .contact-links a:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.1s;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .output-box {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            min-height: 50px;
+            word-break: break-word;
+        }
+
+        .calc-display {
+            background: #0f172a;
+            color: #38bdf8;
+            font-size: 1.4rem;
+            padding: 10px;
+            text-align: left;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .calc-btn {
+            background: #e2e8f0;
+            color: var(--text-main);
+            padding: 10px;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .calc-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مساعد الطالب الذكي</h1>
+        <p>منصتك التعليمية المتكاملة المدعومة بالذكاء الاصطناعي</p>
+        <div class="contact-links">
+            <a href="https://wa.me/963984946630" target="_blank">للتواصل مع المطور عبر الواتساب</a>
+            <a href="https://t.me/AAAAAAbmm" target="_blank">للتواصل مع المطور عبر التليجرام (@AAAAAAbmm)</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 1. قسم نصيحة تحفيزية اليوم -->
+        <div class="card">
+            <div>
+                <h2>نصيحة تحفيزية اليوم 💡</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">اضغط للحصول على جرعة تحفيزية دراسية:</p>
+                <button onclick="getMotivationalQuote()">احصل على نصيحة اليوم</button>
+            </div>
+            <div class="output-box" id="quoteOutput" style="font-style: italic; color: var(--primary);">اضغط الزر لتوليد نصيحة تحفيزية...</div>
+        </div>
+
+        <!-- 2. قسم مترجم المصطلحات الأجنبية -->
+        <div class="card">
+            <div>
+                <h2>مترجم وشارح المصطلحات 🌐</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">اكتب المصطلح أو ارفع صورة/ملف للترجمة والشرح:</p>
+                <input type="text" id="termInput" placeholder="أدخل المصطلح أو الكلمة هنا...">
+                <input type="file" id="termFile" accept="image/*,application/pdf" style="margin-bottom: 10px;">
+                <button onclick="processAIHybrid('termInput', 'termFile', 'termOutput', 'قم بترجمة هذا المصطلح أو محتوى الصورة/الملف وشرح معناه بطريقة مبسطة للطالب:')">ترجمة وشرح ذكي</button>
+            </div>
+            <div class="output-box" id="termOutput">الترجمة والشرح سيظهران هنا...</div>
+        </div>
+
+        <!-- 3. قسم التلخيص الذكي -->
+        <div class="card">
+            <div>
+                <h2>قسم التلخيص الذكي</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">اكتب النص أو ارفع صورة/ملف لتلخيصه:</p>
+                <textarea id="summaryText" placeholder="اكتب أو الصق النص هنا للتلخيص..."></textarea>
+                <input type="file" id="summaryFile" accept="image/*,application/pdf" style="margin-bottom: 10px;">
+                <button onclick="processAIHybrid('summaryText', 'summaryFile', 'summaryOutput', 'قم بتلخيص هذا النص أو محتوى الملف/الصورة التعليمي بأسلوب مبسط ومنظم بنقاط واضحة:')">تلخيص المحتوى</button>
+            </div>
+            <div class="output-box" id="summaryOutput">النتيجة ستظهر هنا...</div>
+        </div>
+
+        <!-- 4. قسم توليد الاختبارات -->
+        <div class="card">
+            <div>
+                <h2>قسم توليد الاختبارات والأسئلة</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">اكتب المادة أو ارفع صورة الدرس لتوليد أسئلة:</p>
+                <textarea id="quizText" placeholder="اكتب محتوى المادة الدراسية هنا..."></textarea>
+                <input type="file" id="quizFile" accept="image/*,application/pdf" style="margin-bottom: 10px;">
+                <button onclick="processAIHybrid('quizText', 'quizFile', 'quizOutput', 'بناءً على هذا النص أو الصورة، قم بتوليد 3 أسئلة اختبارية مهمة للطالب مع إجاباتها باختصار:')">توليد 3 أسئلة</button>
+            </div>
+            <div class="output-box" id="quizOutput">الأسئلة ستظهر هنا...</div>
+        </div>
+
+        <!-- 5. قسم توليد الخرائط الذهنية النصية -->
+        <div class="card">
+            <div>
+                <h2>توليد الخرائط الذهنية النصية</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">حول الدرس أو الصورة إلى أفكار شجرية:</p>
+                <textarea id="mindMapText" placeholder="اكتب أو الصق نص الدرس هنا..."></textarea>
+                <input type="file" id="mindMapFile" accept="image/*,application/pdf" style="margin-bottom: 10px;">
+                <button onclick="processAIHybrid('mindMapText', 'mindMapFile', 'mindMapOutput', 'حول هذا النص أو محتوى الصورة إلى خريطة ذهنية نصية هيكلية مرتبة باستخدام الرموز التعبيرية والأسهم لتسهيل الفهم والحفظ:')">تحويل إلى مخططات</button>
+            </div>
+            <div class="output-box" id="mindMapOutput">الخريطة الذهنية ستظهر هنا...</div>
+        </div>
+
+        <!-- 6. مسرد المصطلحات والبطاقات الذكية -->
+        <div class="card">
+            <div>
+                <h2>مسرد البطاقات الذكية (Flashcards)</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">أضف سؤالاً وجوابه للمراجعة السريعة:</p>
+                <input type="text" id="flashcardQ" placeholder="السؤال أو المصطلح...">
+                <input type="text" id="flashcardA" placeholder="الإجابة أو التحديد...">
+                <button onclick="addFlashcard()">إضافة للبطاقات</button>
+            </div>
+            <div class="output-box" id="flashcardsList" style="max-height: 120px; overflow-y:auto;">لا توجد بطاقات محفوظة.</div>
+        </div>
+
+        <!-- 7. جدول الحصص الأسبوعي -->
+        <div class="card">
+            <div>
+                <h2>جدول الحصص الأسبوعي 📅</h2>
+                <select id="scheduleDay">
+                    <option value="السبت">السبت</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الإثنين">الإثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                    <option value="الأربعاء">الأربعاء</option>
+                    <option value="الخميس">الخميس</option>
+                    <option value="الجمعة">الجمعة</option>
+                </select>
+                <input type="text" id="scheduleSubject" placeholder="اسم المادة أو المحاضرة ووقتها...">
+                <button onclick="addScheduleItem()">إضافة للجدول</button>
+            </div>
+            <div class="output-box" id="scheduleList" style="max-height: 120px; overflow-y:auto;">الجدول فارغ حالياً.</div>
+        </div>
+
+        <!-- 8. مخطط جدول الامتحانات -->
+        <div class="card">
+            <div>
+                <h2>مخطط جدول الامتحانات</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">حدد تاريخ ووقت الامتحان لمعرفة الوقت المتبقي:</p>
+                <input type="date" id="examDate">
+                <button onclick="calculateExamCountdown()">حساب المتبقي للامتحان</button>
+            </div>
+            <div class="output-box" id="examCountdownOutput" style="text-align: center; font-weight: bold; color: var(--primary);">اختر التاريخ وابدأ الحساب...</div>
+        </div>
+
+        <!-- 9. الملاحظات الدائمة -->
+        <div class="card">
+            <div>
+                <h2>ملاحظاتي الدراسية (محفوظة)</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">ملاحظاتك تبقى محفوظة تلقائية على جهازك:</p>
+                <textarea id="permanentNotes" placeholder="اكتب ملاحظاتك المهمة هنا..." oninput="saveNotes()"></textarea>
+            </div>
+            <button onclick="clearNotes()" style="background-color: #ef4444;">حذف الملاحظات</button>
+        </div>
+
+        <!-- 10. الآلة الحاسبة -->
+        <div class="card">
+            <div>
+                <h2>الآلة الحاسبة الطلابية</h2>
+                <div class="calc-display" id="calcDisplay">0</div>
+                <div class="calculator-grid">
+                    <button class="calc-btn" onclick="calcAppend('7')">7</button>
+                    <button class="calc-btn" onclick="calcAppend('8')">8</button>
+                    <button class="calc-btn" onclick="calcAppend('9')">9</button>
+                    <button class="calc-btn" onclick="calcAppend('/')" style="background:#bae6fd">/</button>
+                    <button class="calc-btn" onclick="calcAppend('4')">4</button>
+                    <button class="calc-btn" onclick="calcAppend('5')">5</button>
+                    <button class="calc-btn" onclick="calcAppend('6')">6</button>
+                    <button class="calc-btn" onclick="calcAppend('*')" style="background:#bae6fd">*</button>
+                    <button class="calc-btn" onclick="calcAppend('1')">1</button>
+                    <button class="calc-btn" onclick="calcAppend('2')">2</button>
+                    <button class="calc-btn" onclick="calcAppend('3')">3</button>
+                    <button class="calc-btn" onclick="calcAppend('-')" style="background:#bae6fd">-</button>
+                    <button class="calc-btn" onclick="calcAppend('0')">0</button>
+                    <button class="calc-btn" onclick="calcAppend('.')">.</button>
+                    <button class="calc-btn" onclick="calcCalculate()" style="background:#38bdf8; color:white;">=</button>
+                    <button class="calc-btn" onclick="calcAppend('+')" style="background:#bae6fd">+</button>
+                </div>
+            </div>
+            <button onclick="calcClear()" style="background:#64748b;">مسح الشاشة</button>
+        </div>
+
+        <!-- 11. المؤقت الدراسي -->
+        <div class="card">
+            <div>
+                <h2>المؤقت الدراسي (بومودورو)</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">حدد الدقائق:</p>
+                <input type="number" id="timerMinutes" value="30" min="1">
+                <div class="timer-display" id="timerDisplay">30:00</div>
+            </div>
+            <div class="timer-controls" style="display: flex; gap: 5px;">
+                <button onclick="startTimer()">بدء المؤقت</button>
+                <button onclick="resetTimer()" style="background-color: #64748b;">إعادة ضبط</button>
+            </div>
+        </div>
+
+        <!-- 12. جدول المهام اليومية -->
+        <div class="card">
+            <div>
+                <h2>جدول المهام اليومية</h2>
+                <input type="text" id="taskInput" placeholder="أضف مهمة جديدة...">
+                <button onclick="addTask()">إضافة للمهام</button>
+            </div>
+            <div class="output-box" id="taskList" style="max-height: 100px; overflow-y:auto;">لا توجد مهام حالياً.</div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>تم التطوير بكل حب من قبل محمد الحسين</p>
+        <p>جميع حقوق النشر محفوظة 2026 &copy;</p>
+    </footer>
+
+    <script>
+        const GEMINI_API_KEY = "AQ.Ab8RN6KEQDV8A4OBg8Q6zplcVXCjo3XQpduy_XDankhWMy2aQA";
+
+        async function processAIHybrid(textInputId, fileInputId, outputId, systemPrompt) {
+            const textInput = document.getElementById(textInputId);
+            const fileInput = document.getElementById(fileInputId);
+            const outputBox = document.getElementById(outputId);
+            
+            const userText = textInput ? textInput.value.trim() : "";
+            const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
+
+            if (!userText && !hasFile) {
+                alert('الرجاء كتابة نص أو اختيار صورة/ملف أولاً!');
+                return;
+            }
+
+            outputBox.innerText = "🤖 جاري معالجة الطلب وتحليله عبر الذكاء الاصطناعي...";
+
+            if (hasFile) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = async function() {
+                    const base64Data = reader.result.split(',')[1];
+                    const mimeType = file.type;
+
+                    try {
+                        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{
+                                    parts: [
+                                        { text: `${systemPrompt} ${userText ? '\nملاحظة الطالب: ' + userText : ''}` },
+                                        {
+                                            inline_data: {
+                                                mime_type: mimeType,
+                                                data: base64Data
+                                            }
+                                        }
+                                    ]
+                                }]
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.candidates && data.candidates[0].content.parts[0].text) {
+                            outputBox.innerText = data.candidates[0].content.parts[0].text;
+                        } else {
+                            outputBox.innerText = "عذراً، لم يتمكن الذكاء الاصطناعي من قراءة الملف. تأكد من وضوحه.";
+                        }
+                    } catch (error) {
+                        outputBox.innerText = "تعذر الاتصال بالخادم، تأكد من اتصال الإنترنت.";
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: `${systemPrompt}\n\nالنص هو:\n${userText}` }]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0].content.parts[0].text) {
+                        outputBox.innerText = data.candidates[0].content.parts[0].text;
+                    } else {
+                        outputBox.innerText = "عذراً، حدث خطأ في الرد. يرجى المحاولة لاحقاً.";
+                    }
+                } catch (error) {
+                    outputBox.innerText = "تعذر الاتصال بالخادم، تأكد من اتصال الإنترنت.";
+                }
+            }
+        }
+
+        async function getMotivationalQuote() {
+            const outputBox = document.getElementById('quoteOutput');
+            outputBox.innerText = "✨ جاري جلب نصيحة تحفيزية لك...";
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: "أعطني نصيحة تحفيزية قصيرة ومحمسة جداً لطالب يبدأ دراسته اليوم باللغة العربية:" }]
+                        }]
+                    })
+                });
+                const data = await response.json();
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    outputBox.innerText = data.candidates[0].content.parts[0].text;
+                } else {
+                    outputBox.innerText = "اجعل طموحك بلا حدود واستمر في التقدم!";
+                }
+            } catch (e) {
+                outputBox.innerText = "النجاح يبدأ بخطوة صغيرة، استمر ولا تتوقف!";
+            }
+        }
+
+        let flashcards = JSON.parse(localStorage.getItem('student_flashcards')) || [];
+        function addFlashcard() {
+            const q = document.getElementById('flashcardQ').value.trim();
+            const a = document.getElementById('flashcardA').value.trim();
+            if (!q || !a) {
+                alert('الرجاء إدخال السؤال والإجابة!');
+                return;
+            }
+            flashcards.push({q, a});
+            localStorage.setItem('student_flashcards', JSON.stringify(flashcards));
+            document.getElementById('flashcardQ').value = '';
+            document.getElementById('flashcardA').value = '';
+            renderFlashcards();
+        }
+        function renderFlashcards() {
+            const list = document.getElementById('flashcardsList');
+            if (flashcards.length === 0) {
+                list.innerText = "لا توجد بطاقات محفوظة.";
+                return;
+            }
+            list.innerHTML = flashcards.map((item) => `
+                <div style="border-bottom: 1px solid #cbd5e1; padding: 5px 0;">
+                    <b>س:</b> ${item.q} <br><b>ج:</b> ${item.a}
+                </div>
+            `).join('');
+        }
+        renderFlashcards();
+
+        let schedule = JSON.parse(localStorage.getItem('student_schedule')) || [];
+        function addScheduleItem() {
+            const day = document.getElementById('scheduleDay').value;
+            const subject = document.getElementById('scheduleSubject').value.trim();
+            if (!subject) {
+                alert('الرجاء إدخال اسم المادة أو المحاضرة!');
+                return;
+            }
+            schedule.push({day, subject});
+            localStorage.setItem('student_schedule', JSON.stringify(schedule));
+            document.getElementById('scheduleSubject').value = '';
+            renderSchedule();
+        }
+        function renderSchedule() {
+            const list = document.getElementById('scheduleList');
+            if (schedule.length === 0) {
+                list.innerText = "الجدول فارغ حالياً.";
+                return;
+            }
+            list.innerHTML = schedule.map(item => `
+                <div style="border-bottom: 1px solid #cbd5e1; padding: 4px 0;">
+                    <b>[${item.day}]</b>: ${item.subject}
+                </div>
+            `).join('');
+        }
+        renderSchedule();
+
+        function calculateExamCountdown() {
+            const examDateInput = document.getElementById('examDate').value;
+            const output = document.getElementById('examCountdownOutput');
+            if (!examDateInput) {
+                output.innerText = "الرجاء اختيار تاريخ الامتحان أولاً!";
+                return;
+            }
+            const examDate = new Date(examDateInput).getTime();
+            const now = new Date().getTime();
+            const distance = examDate - now;
+
+            if (distance < 0) {
+                output.innerText = "لقد تجاوزت موعد هذا الامتحان!";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            output.innerText = `متبقي للامتحان: ${days} يوم و ${hours} ساعة!`;
+        }
+
+        const notesField = document.getElementById('permanentNotes');
+        notesField.value = localStorage.getItem('student_notes') || '';
+        function saveNotes() {
+            localStorage.setItem('student_notes', notesField.value);
+        }
+        function clearNotes() {
+            notesField.value = '';
+            localStorage.removeItem('student_notes');
+        }
+
+        let calcValue = '0';
+        function updateCalcDisplay() {
+            document.getElementById('calcDisplay').innerText = calcValue;
+        }
+        function calcAppend(char) {
+            if (calcValue === '0' && char !== '.') {
+                calcValue = char;
+            } else {
+                calcValue += char;
+            }
+            updateCalcDisplay();
+        }
+        function calcClear() {
+            calcValue = '0';
+            updateCalcDisplay();
+        }
+        function calcCalculate() {
+            try {
+                calcValue = eval(calcValue).toString();
+            } catch (e) {
+                calcValue = 'خطأ في العملية';
+            }
+            updateCalcDisplay();
+        }
+
+        let timerInterval;
+        let timeLeft = 30 * 60;
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        function startTimer() {
+            const minInput = parseInt(document.getElementById('timerMinutes').value);
+            if (!timerInterval) {
+                timeLeft = minInput * 60;
+                updateTimerDisplay();
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        alert('انتهى الوقت الدراسي! خذ استراحة قصيرة.');
+                    }
+                }, 1000);
+            }
+        }
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            const minInput = parseInt(document.getElementById('timerMinutes').value) || 30;
+            timeLeft = minInput * 60;
+            updateTimerDisplay();
+        }
+
+        let tasks = JSON.parse(localStorage.getItem('student_tasks')) || [];
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const val = taskInput.value.trim();
+            if (!val) {
+                alert('الرجاء إدخال نص المهمة!');
+                return;
+            }
+            tasks.push(val);
+            localStorage.setItem('student_tasks', JSON.stringify(tasks));
+            taskInput.value = '';
+            renderTasks();
+        }
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            if (tasks.length === 0) {
+                list.innerText = "لا توجد مهام حالياً.";
+                return;
+            }
+            list.innerHTML = tasks.map((task, index) => `
+                <div style="border-bottom: 1px solid #cbd5e1; padding: 4px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span>${index + 1}. ${task}</span>
+                    <button onclick="removeTask(${index})" style="width: auto; padding: 2px 8px; font-size: 0.75rem; background: #ef4444; margin: 0;">حذف</button>
+                </div>
+            `).join('');
+        }
+        function removeTask(index) {
+            tasks.splice(index, 1);
+            localStorage.setItem('student_tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+        renderTasks();
+    </script>
+</body>
+</html>
